@@ -51,8 +51,7 @@ button:disabled { opacity: 0.58; cursor: not-allowed; }
 .brand-button {
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: fit-content;
+  width: min(360px, 40vw);
   padding: 0;
   border: 0;
   background: transparent;
@@ -62,23 +61,21 @@ button:disabled { opacity: 0.58; cursor: not-allowed; }
 }
 
 .brand-symbol {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  color: var(--navy);
-  background: var(--yellow);
-  font-weight: 950;
+  width: 100%;
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
 }
 
-.brand-button span:last-child {
-  display: grid;
-  gap: 2px;
+.brand-symbol img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
 }
-
-.brand-button strong { font-size: 1rem; }
-.brand-button small { color: var(--muted); font-size: 0.78rem; }
 
 .public-nav nav {
   display: flex;
@@ -129,15 +126,16 @@ button:disabled { opacity: 0.58; cursor: not-allowed; }
 }
 
 .hero-logo {
-  width: min(360px, 82vw);
+  width: min(520px, 90vw);
   margin-bottom: 22px;
-  padding: 10px 14px;
+  padding: 14px 18px;
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.68);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 18px 42px rgba(5, 18, 40, 0.24);
 }
 
-.hero-logo img { width: 100%; display: block; }
+.hero-logo img { width: 100%; height: auto; display: block; }
 
 .badge,
 .section-kicker {
@@ -559,6 +557,7 @@ textarea { resize: vertical; min-height: 96px; }
 
 @media (max-width: 820px) {
   .public-nav { grid-template-columns: 1fr; align-items: stretch; }
+  .brand-button { width: min(320px, 100%); }
   .public-nav nav { width: 100%; }
   .public-nav nav button, .internal-access { width: 100%; }
   .public-hero { min-height: 590px; }
