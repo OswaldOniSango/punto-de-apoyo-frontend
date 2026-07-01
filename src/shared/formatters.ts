@@ -5,6 +5,11 @@ export function formatDate(value?: string) {
   return new Intl.DateTimeFormat('es-VE', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value))
 }
 
+export function formatDateOnly(value?: string) {
+  if (!value) return '-'
+  return new Intl.DateTimeFormat('es-VE', { dateStyle: 'medium' }).format(new Date(value))
+}
+
 export function statusLabel(status: CaseStatus) {
   const labels: Record<CaseStatus, string> = {
     PENDIENTE: 'Pendiente',

@@ -27,7 +27,8 @@ export function PublicCaseForm() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const form = new FormData(event.currentTarget)
+    const formElement = event.currentTarget
+    const form = new FormData(formElement)
     const payload = {
       applicantName: String(form.get('applicantName') || ''),
       applicantPhone: normalizePhone(String(form.get('applicantPhone') || '')),
@@ -44,8 +45,8 @@ export function PublicCaseForm() {
     setNotice(null)
     try {
       const created = await publicCasesApi.create(payload, photos)
-      setNotice({ type: 'success', text: `Caso creado: ${created.trackingCode}` })
-      event.currentTarget.reset()
+      setNotice({ type: 'success', text: created?.trackingCode ? `Caso creado: ${created.trackingCode}` : 'Caso creado correctamente' })
+      formElement.reset()
       setPhotos([])
       setPosition(initialPosition)
     } catch (error) {
