@@ -70,7 +70,20 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     return response.json() as Promise<T>
   }
 
-  return response.blob() as Promise<T>
+  if (contentType.includes('application/pdf') || contentType.includes('application/octet-stream') || contentType.startsWith('image/')) {
+    return response.blob() as Promise<T>
+  }
+
+  const text = await response.text()
+  if (!text) {
+    return undefined as T
+  }
+
+  try {
+    return JSON.parse(text) as T
+  } catch {
+    return text as T
+  }
 }
 
 export function assetUrl(fileUrl: string) {

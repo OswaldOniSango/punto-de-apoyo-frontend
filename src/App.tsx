@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { clearSession, getStoredToken, getStoredUser } from './api'
 import { Dashboard } from './features/cases/Dashboard'
@@ -13,7 +13,21 @@ import type { AuthenticatedUser } from './types'
 export default function App() {
   const [token, setToken] = useState(() => getStoredToken())
   const [user, setUser] = useState<AuthenticatedUser | null>(() => getStoredUser())
-  const [view, setView] = useState<View>(() => (getStoredToken() ? 'dashboard' : 'public-create'))
+  const [view, setViewState] = useState<View>(() => viewFromPath(window.location.pathname, getStoredToken()))
+
+  useEffect(() => {
+    function syncRoute() {
+      setViewState(viewFromPath(window.location.pathname, getStoredToken()))
+    }
+    window.addEventListener('popstate', syncRoute)
+    return () => window.removeEventListener('popstate', syncRoute)
+  }, [])
+
+  function setView(nextView: View) {
+    const path = pathFromView(nextView)
+    if (window.location.pathname !== path) window.history.pushState(null, '', path)
+    setViewState(nextView)
+  }
 
   function handleLogin(authToken: string, authUser: AuthenticatedUser) {
     setToken(authToken)
@@ -25,7 +39,7 @@ export default function App() {
     clearSession()
     setToken(null)
     setUser(null)
-    setView('public-create')
+    setView('home')
   }
 
   if (!token) {
@@ -44,4 +58,25 @@ function AuthenticatedApp({ token, user, view, setView }: { token: string; user:
   if (view === 'public-status') return <PublicStatusPanel />
   if (view === 'users') return <UsersPanel token={token} user={user} />
   return <Dashboard token={token} user={user} setView={setView} />
+}
+
+function viewFromPath(path: string, token: string | null): View {
+  if (path === '/reportar') return 'public-create'
+  if (path === '/buscar') return 'public-status'
+  if (path === '/usuarios') return token ? 'users' : 'login'
+  if (path === '/operaciones') return token ? 'dashboard' : 'login'
+  if (path === '/interno') return token ? 'dashboard' : 'login'
+  return token ? 'dashboard' : 'home'
+}
+
+function pathFromView(view: View) {
+  const paths: Record<View, string> = {
+    home: '/',
+    dashboard: '/operaciones',
+    users: '/usuarios',
+    'public-create': '/reportar',
+    'public-status': '/buscar',
+    login: '/interno',
+  }
+  return paths[view]
 }

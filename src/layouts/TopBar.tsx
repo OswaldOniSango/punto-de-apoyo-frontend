@@ -2,6 +2,7 @@ import type { View } from '../shared/viewTypes'
 
 function viewTitle(view: View) {
   const titles: Record<View, string> = {
+    home: 'Inicio',
     dashboard: 'Centro de Operaciones',
     users: 'Usuarios internos',
     'public-status': 'Consulta publica',
