@@ -20,12 +20,12 @@ export function InternalShell({ user, view, setView, logout, children }: { user:
 
   return (
     <div className="internal-shell">
-      <aside className={menuOpen ? 'app-sidebar open' : 'app-sidebar'} aria-hidden={!menuOpen}>
+      <aside className={menuOpen ? 'app-sidebar open' : 'app-sidebar'}>
         <div className="sidebar-head">
           <button className="sidebar-brand" onClick={() => navigate('dashboard')}>
             <img src="/punto-de-apoyo-logo.png" alt="Punto de Apoyo" />
           </button>
-          <button className="drawer-close" onClick={() => setMenuOpen(false)} aria-label="Cerrar menu">×</button>
+          <button className="drawer-close" onClick={() => setMenuOpen(false)} aria-label="Cerrar menu">x</button>
         </div>
         <nav className="app-menu" aria-label="Menu interno">
           <div className="menu-section">
